@@ -1,0 +1,67 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{tikz}
+
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+
+\usepackage{xepersian}
+
+\settextfont{DejaVu Sans}
+\setlatintextfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+
+\input{../includegraphical_file_path}
+
+\onehalfspacing
+
+\title{
+	یکپارچه‌سازی داده‌های بیماری قلبی و طبقه‌بندی با الگوریتم KNN\\
+	{\large تکلیف درس داده‌کاوی}
+}
+
+\author{
+	محمود صدریان\\
+	شماره دانشجویی: ۴۰۴۳۵۳۳۶\\[6pt]
+	\href{https://github.com/mahmoud-sadrian/heart-disease_KNN_classifier/}{GitHub Repository}
+}
+
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		این گزارش یک مطالعهٔ داده‌کاوی بر روی مجموعه‌دادهٔ بیماری قلبی از مخزن UCI است و هدف آن پیش‌بینی وجود بیماری قلبی بر اساس ویژگی‌های بالینی بیماران با استفاده از الگوریتم KNN می‌باشد. داده‌ها پیش‌پردازش شده‌اند (جایگزینی مقادیر گمشده، نرمال‌سازی و تقسیم آموزش–آزمون) و تحلیل اکتشافی داده‌ها (EDA) شامل هیستوگرام‌ها، نمودارهای جعبه‌ای، نمودارهای احتمال–احتمال، ماتریس همبستگی، نمودارهای چندمتغیره (Pair Plot) و نمودارهای شمارشی انجام شده است. طبقه‌بند KNN با استفاده از تابع فاصلهٔ ترکیبی پیاده‌سازی شده و عملکرد آن با معیارهایی مانند دقت، بازخوانی، دقت مثبت، امتیاز F1 و ماتریس اغتشاش ارزیابی گردیده است.
+	\end{abstract}
+	
+	\input{sections/introduction}
+	\input{sections/dataset}
+	\input{sections/preprocessing}
+	\input{sections/eda}
+	\input{sections/knn}
+	\input{sections/conclusion}
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{uci}
+		مجموعه‌دادهٔ بیماری قلبی – مخزن داده‌های UCI.\\
+		\url{https://archive.ics.uci.edu/ml/datasets/heart+disease}
+		
+	\end{thebibliography}
+	
+\end{document}
