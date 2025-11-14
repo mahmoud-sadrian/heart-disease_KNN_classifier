@@ -1,0 +1,63 @@
+\documentclass[12pt,a4paper]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{setspace}
+\usepackage{lipsum}
+
+% مسیر عکس‌ها (نسبت به main.tex)
+\graphicspath{{includegraphics/}}
+
+\onehalfspacing  % line spacing 1.5
+
+% ---------- Title Info ----------
+\title{Heart Disease Data Integration and KNN Classification\\
+	\large Data Mining -- Homework 1}
+\author{
+	Mahmoud Sadrian \\ Student ID: 40435336 \\
+	\href{https://github.com/mahmoud-sadrian/heart-disease_KNN_classifier/}{GitHub Repository}
+}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		This report presents a data mining study on the Heart Disease dataset from the UCI Machine Learning Repository.
+		The main goal is to predict the presence of heart disease based on patients' clinical attributes using the 
+		K-Nearest Neighbors (KNN) classification algorithm. The data were preprocessed through handling missing values,
+		normalizing numerical features, and splitting the dataset into training and testing sets. 
+		Exploratory data analysis (EDA) was conducted using histograms, boxplots, Q-Q plots, correlation matrices,
+		pair plots, and count plots to better understand the feature distributions and relationships.
+		The KNN classifier was implemented from scratch with a mixed distance function combining numerical
+		and categorical attributes. The model performance was evaluated using accuracy, precision, recall, F1-score,
+		and confusion matrix. The results show that KNN can achieve reasonable performance in predicting heart disease,
+		demonstrating how simple distance-based methods can be applied to medical decision support.
+	\end{abstract}
+	
+	% ---------- Sections as modules ----------
+	\input{sections/introduction}
+	\input{sections/dataset}
+	\input{sections/preprocessing}
+	\input{sections/eda}
+	\input{sections/knn}
+	\input{sections/conclusion}
+	
+	% ---------- References ----------
+	\begin{thebibliography}{9}
+		
+		\bibitem{uci}
+		UCI Machine Learning Repository: Heart Disease Data Set.\\
+		\url{https://archive.ics.uci.edu/ml/datasets/heart+disease}
+		
+	\end{thebibliography}
+	
+\end{document}

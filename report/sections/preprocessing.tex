@@ -1,0 +1,73 @@
+\section{Data Preprocessing}
+Before applying any machine learning method, it is essential to ensure that the dataset is clean, consistent,
+and properly scaled. In this project, the preprocessing pipeline consists of three main steps:
+\begin{enumerate}
+	\item handling missing values,
+	\item normalization of numeric features,
+	\item splitting the data into training and testing sets.
+\end{enumerate}
+
+All preprocessing steps were implemented in Python using the \texttt{pandas} and \texttt{numpy} libraries.
+The corresponding code is organized into modular functions in the Jupyter notebook in order to keep the
+implementation clean and reusable.
+
+\subsection{Handling Missing Values}
+After loading the integrated heart disease dataset as a CSV file, we first inspected the data using
+\texttt{df.info()} and \texttt{df.isna().sum()} to check for missing values and potential inconsistencies.
+To ensure a complete dataset, we applied a simple but robust imputation strategy:
+
+\begin{itemize}
+	\item For \textbf{numeric} features (such as \texttt{age}, \texttt{trestbps}, \texttt{chol},
+	\texttt{thalach}, and \texttt{oldpeak}), missing values were replaced with the
+	\emph{median} of the corresponding column.
+	\item For \textbf{categorical or binary} features (such as \texttt{sex}, \texttt{cp},
+	\texttt{fbs}, \texttt{restecg}, \texttt{exang}, \texttt{slope}, \texttt{ca}, and \texttt{thal}),
+	missing values were replaced with the \emph{mode} (most frequent value) in each column.
+\end{itemize}
+
+Median imputation is less sensitive to outliers than mean imputation and is therefore suitable
+for medical measurements that may contain extreme values. Mode imputation for categorical
+variables preserves the most common category and avoids introducing unrealistic new values.
+
+The imputation was implemented in a dedicated function \texttt{impute\_missing\_values()}, which
+takes the dataset and the lists of numeric and categorical columns as input and returns a cleaned
+version of the data. After this step, we verified that the number of missing values in all columns
+is zero.
+
+\subsection{Normalization of Numeric Features}
+Because the KNN classifier is a distance-based algorithm, it is crucial that all numeric features
+are on a comparable scale. Otherwise, attributes with larger numeric ranges would dominate the
+distance computation and bias the classification result.
+
+In this project, we applied \textbf{Min--Max scaling} to all numeric features. For a numeric
+attribute $x$, the normalized value $x'$ is computed as:
+\begin{equation}
+	x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}},
+\end{equation}
+where $x_{\min}$ and $x_{\max}$ are the minimum and maximum values of that feature in the
+\emph{training} set.
+
+To avoid data leakage, the scaling parameters (minimum and maximum) were computed using only
+the training data. The same parameters were then applied to transform the test data.
+This was implemented in the function \texttt{min\_max\_scale\_train\_test()}, which returns
+scaled versions of both the training and test sets.
+
+If a numeric column happened to be constant (i.e., $x_{\max} = x_{\min}$), the normalized
+values for that column were set to zero to avoid division by zero.
+
+\subsection{Train--Test Split}
+To evaluate the generalization performance of the KNN classifier, the dataset was split into
+a training set and a testing set. The data were first randomly shuffled and then divided using
+an \textbf{80\% / 20\%} split ratio:
+\begin{itemize}
+	\item 80\% of the instances were used for training the model,
+	\item 20\% of the instances were held out as an independent test set.
+\end{itemize}
+
+The split was implemented in a helper function \texttt{train\_test\_split\_df()}, which takes
+the full dataset and a \texttt{test\_size} parameter as input. A fixed random seed was used to
+ensure reproducibility of the results.
+
+After the split and scaling, the final matrices \texttt{X\_train}, \texttt{y\_train},
+\texttt{X\_test}, and \texttt{y\_test} were obtained. These were used in the subsequent
+experiments with the KNN classifier.

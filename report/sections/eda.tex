@@ -1,0 +1,356 @@
+\section{Exploratory Data Analysis}
+Before training the classifier, we performed an exploratory data analysis (EDA) in order to gain a better
+understanding of the feature distributions, potential outliers, and relationships between variables.
+All visualizations were generated in Python using the \texttt{matplotlib} and \texttt{seaborn} libraries.
+
+\subsection{Histograms of Numeric Features}
+
+To gain an initial understanding of the numerical attributes in the dataset, histograms were generated for
+the five key continuous features: \texttt{age}, \texttt{chol}, \texttt{oldpeak}, \texttt{thalach}, and \texttt{trestbps}.
+These plots provide insights into the overall shape of each distribution, the presence of skewness, and the
+frequency of extreme values. The following observations summarize the patterns apparent in the data.
+
+\paragraph{Age.}
+Figure~\ref{fig:hist-age} shows that the patients' ages range roughly from 30 to 80 years.
+The distribution is close to a quasi-normal shape with a clear peak around 55--60 years.
+Middle-aged and older adults constitute the majority of the dataset, while individuals younger than 40
+appear far less frequently. This pattern is clinically expected, as the risk of heart disease
+increases markedly with age. A mild decline in frequency is observed beyond age 65--70, reflecting the
+lower proportion of very elderly patients in the dataset.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{hist_age.png}
+	\caption{Histogram of the \texttt{age} attribute.}
+	\label{fig:hist-age}
+\end{figure}
+
+\paragraph{Cholesterol (\texttt{chol}).}
+The histogram of \texttt{chol} (Figure~\ref{fig:hist-chol}) exhibits a moderately right-skewed distribution.
+The majority of values lie between 200 and 260 mg/dl, a range commonly associated with borderline or high
+cholesterol levels in clinical practice. A long upper tail extends to extreme values near 400--550 mg/dl,
+reflecting the presence of a few patients with severe lipid abnormalities. These points represent medically
+plausible outliers and are consistent with real-world cardiac risk factors.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{hist_chol.png}
+	\caption{Histogram of the \texttt{chol} attribute.}
+	\label{fig:hist-chol}
+\end{figure}
+
+\paragraph{Oldpeak.}
+The feature \texttt{oldpeak}, representing ST depression induced by exercise, has the most heavily
+right-skewed distribution among all numeric attributes (Figure~\ref{fig:hist-oldpeak}). A large proportion
+of patients have an \texttt{oldpeak} value close to zero, indicating minimal ST segment change.
+The frequencies decrease rapidly as the value increases, with only a small number of observations above 3,
+and rare extreme values reaching 5 or 6. This pattern aligns with clinical expectations, as significant
+ST depression is relatively uncommon in the general cardiac patient population.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{hist_oldpeak.png}
+	\caption{Histogram of the \texttt{oldpeak} attribute.}
+	\label{fig:hist-oldpeak}
+\end{figure}
+
+\paragraph{Thalach.}
+The maximum heart rate (\texttt{thalach}) follows a nearly symmetric, bell-shaped distribution
+(Figure~\ref{fig:hist-thalach}). Most patients achieve a heart rate between 150 and 170 beats per minute
+during stress testing. Extremely low values (below 100) are rare, suggesting possible severe cardiac
+conditions or incomplete exercise tests. This behavior of \texttt{thalach} is well aligned with clinical
+observations across stress test populations.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{hist_thalach.png}
+	\caption{Histogram of the \texttt{thalach} attribute.}
+	\label{fig:hist-thalach}
+\end{figure}
+
+\paragraph{Resting Blood Pressure (\texttt{trestbps}).}
+As shown in Figure~\ref{fig:hist-trestbps}, \texttt{trestbps} displays a distribution slightly skewed
+toward higher values. The central cluster of observations lies between 120 and 140 mmHg, corresponding
+to mild or moderate hypertension, a common risk factor for heart disease. Higher values up to
+approximately 180--200 mmHg appear infrequently but remain clinically realistic for untreated or
+high-risk patients.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{hist_trestbps.png}
+	\caption{Histogram of the \texttt{trestbps} attribute.}
+	\label{fig:hist-trestbps}
+\end{figure}
+
+Taken together, the histograms confirm that the numerical attributes exhibit a combination of
+near-normal, moderately skewed, and heavily skewed distributions, each consistent with
+real-world medical behavior. These observations further motivate the use of normalization
+before applying distance-based algorithms such as KNN.
+
+\subsection{Boxplots and Outliers}
+
+Boxplots were generated for the five main numeric features in order to examine their spread, central
+tendency, and potential outliers. These visualizations highlight the variability of each clinical measurement
+and provide insights into whether extreme values are present. The following describes the observations
+from each boxplot in detail.
+
+\paragraph{Age.}
+The boxplot of \texttt{age} (Figure~\ref{fig:boxplot-age}) shows that the majority of patients fall between
+approximately 50 and 62 years of age, with a median around 56--58 years. No significant outliers are present,
+indicating a relatively consistent age distribution. This pattern aligns well with clinical expectations,
+as heart disease is most common among middle-aged and older adults.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{boxplot_age.png}
+	\caption{Boxplot of the \texttt{age} attribute.}
+	\label{fig:boxplot-age}
+\end{figure}
+
+\paragraph{Cholesterol (\texttt{chol}).}
+The boxplot of \texttt{chol} (Figure~\ref{fig:boxplot-chol}) reveals a number of high-value outliers,
+with extreme cholesterol levels above 400 and even near 550 mg/dl. The interquartile range lies roughly
+between 200 and 275 mg/dl, and the median is around 240--250 mg/dl. These outliers are medically plausible,
+as severe hypercholesterolemia is a well-known risk factor for cardiac conditions.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{boxplot_chol.png}
+	\caption{Boxplot of the \texttt{chol} attribute.}
+	\label{fig:boxplot-chol}
+\end{figure}
+
+\paragraph{Oldpeak.}
+The boxplot of \texttt{oldpeak} (Figure~\ref{fig:boxplot-oldpeak}) shows a strongly right-skewed
+distribution, with the majority of values located between 0 and 1.5. A few substantial outliers appear above 5,
+indicating rare but clinically significant cases of severe ST depression during exercise testing. These extreme
+values contribute to the heavy-tailed structure observed in the histogram of this feature.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{boxplot_oldpeak.png}
+	\caption{Boxplot of the \texttt{oldpeak} attribute.}
+	\label{fig:boxplot-oldpeak}
+\end{figure}
+
+\paragraph{Thalach.}
+In the boxplot of \texttt{thalach} (Figure~\ref{fig:boxplot-thalach}), the central mass of the data lies between
+approximately 140 and 170 beats per minute, with a median near 155 bpm. A single low outlier around 80 bpm is
+visible, which may correspond to severe cardiac limitations or an incomplete stress test. Upper values extend to
+about 200 bpm, which is physiologically plausible in stress testing scenarios.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{boxplot_thalach.png}
+	\caption{Boxplot of the \texttt{thalach} attribute.}
+	\label{fig:boxplot-thalach}
+\end{figure}
+
+\paragraph{Resting Blood Pressure (\texttt{trestbps}).}
+The boxplot of \texttt{trestbps} (Figure~\ref{fig:boxplot-trestbps}) shows a typical clinical distribution,
+with most values in the 120--140 mmHg range and a median around 130--135 mmHg. Several pronounced outliers
+appear at 170--200 mmHg, indicating cases of severe hypertension. These observations are consistent with known
+risk patterns in cardiac patients.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{boxplot_trestbps.png}
+	\caption{Boxplot of the \texttt{trestbps} attribute.}
+	\label{fig:boxplot-trestbps}
+\end{figure}
+
+Overall, the boxplots confirm the presence of meaningful medical outliers in features such as
+\texttt{chol}, \texttt{oldpeak}, and \texttt{trestbps}, while attributes like \texttt{age} and
+\texttt{thalach} exhibit relatively stable distributions. Since KNN is generally robust to a small
+number of well-separated outliers and normalization was applied during preprocessing, these extreme
+values were retained rather than removed.
+
+\subsection{Q--Q Plots}
+
+To examine how closely the numeric features follow a normal distribution, Q--Q plots were generated for
+three representative attributes: \texttt{age}, \texttt{chol}, and \texttt{thalach}. In each plot, the
+sorted sample values are compared against the theoretical quantiles of a normal distribution with the
+same mean and standard deviation. Deviations from the diagonal line indicate departures from normality.
+
+\paragraph{Age.}
+The Q--Q plot for \texttt{age} (Figure~\ref{fig:qq-age}) shows that most points lie close to the diagonal
+line, indicating that the central portion of the distribution is approximately normal. However, noticeable
+deviations appear in both tails: younger ages fall slightly below the reference line, while older ages
+(above roughly 75 years) lie somewhat above it. This pattern suggests a mildly heavy-tailed distribution
+but overall a fairly symmetric structure. Such behavior is typical for age in clinical datasets.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{qq_age.png}
+	\caption{Q--Q plot of the \texttt{age} attribute.}
+	\label{fig:qq-age}
+\end{figure}
+
+\paragraph{Cholesterol (\texttt{chol}).}
+The Q--Q plot of \texttt{chol} (Figure~\ref{fig:qq-chol}) reveals much stronger deviations, particularly
+in the upper tail. While the central region aligns reasonably well with the diagonal, several extreme
+values above 400 mg/dl rise sharply above the theoretical normal quantiles. These points correspond to
+clinically plausible cases of severe hypercholesterolemia. The resulting right-skewed behavior confirms
+that \texttt{chol} does not follow a normal distribution and contains meaningful outliers.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{qq_chol.png}
+	\caption{Q--Q plot of the \texttt{chol} attribute.}
+	\label{fig:qq-chol}
+\end{figure}
+
+\paragraph{Thalach.}
+The Q--Q plot of \texttt{thalach} (Figure~\ref{fig:qq-thalach}) shows that the central portion of the
+distribution is approximately linear, indicating an almost normal pattern. However, the lower tail contains
+a few markedly low values (around 70--90 bpm), which fall well below the diagonal. Similarly, some values
+above 200 bpm appear slightly above the theoretical line. These deviations suggest mild skewness driven by
+rare low and high measurements, consistent with clinical variations observed in exercise testing.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{qq_thalach.png}
+	\caption{Q--Q plot of the \texttt{thalach} attribute.}
+	\label{fig:qq-thalach}
+\end{figure}
+
+Overall, the Q--Q plots confirm that none of the examined features follow a perfectly normal distribution.
+Each attribute exhibits tail deviations or skewness, with \texttt{chol} showing the strongest departure due
+to clinically meaningful high outliers. This is not problematic for the KNN classifier, which does not rely
+on normality assumptions.
+
+\subsection{Correlation Matrix}
+
+To investigate linear relationships among the numeric features and their association with the target variable,
+the Pearson correlation matrix was computed and visualized as a heatmap (Figure~\ref{fig:corr-matrix}).
+The matrix reveals several clinically meaningful patterns and highlights which attributes are most relevant
+for distinguishing between patients with and without heart disease.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{corr_matrix.png}
+	\caption{Correlation matrix of selected numeric features and the target variable.}
+	\label{fig:corr-matrix}
+\end{figure}
+
+The strongest correlations with the target variable are observed for \texttt{thalach} and \texttt{oldpeak}.
+The feature \texttt{thalach} (maximum heart rate achieved) shows a moderately positive correlation ($r = 0.42$),
+indicating that individuals who achieve higher heart rates during exercise are less likely to have heart disease.
+Conversely, \texttt{oldpeak} exhibits a moderately negative correlation with the target ($r = -0.44$), consistent
+with the clinical understanding that larger ST depression values are strongly associated with myocardial ischemia
+and a higher likelihood of disease. Age also shows a mild negative correlation with the target ($r = -0.22$),
+reflecting the increased prevalence of heart disease among older patients, although the relationship is not strictly linear.
+
+Other features such as \texttt{trestbps} and \texttt{chol} display only weak correlations with the target,
+suggesting that—within this dataset—they contribute less predictive power on their own but may still play a role
+when combined with other variables in a multivariate context.
+
+Several inter-feature relationships are also noteworthy. Age and \texttt{thalach} are moderately negatively correlated
+($r = -0.38$), meaning that older individuals typically achieve lower maximum heart rates during stress testing.
+Likewise, \texttt{oldpeak} and \texttt{thalach} show a negative correlation ($r = -0.35$), reflecting the reduced
+exercise tolerance and performance typically seen in patients with ischemic responses.
+
+Overall, the correlation matrix confirms that heart disease in this dataset is most strongly associated with
+exercise-related features such as \texttt{thalach} and \texttt{oldpeak}, while resting measurements such as
+\texttt{trestbps} and \texttt{chol} exhibit weaker linear dependencies with the target. These insights also highlight
+why distance-based models like KNN, which account for interactions among multiple features simultaneously,
+can still perform effectively despite the limited strength of individual linear correlations.
+
+\subsection{Pair Plots (Scatterplot Matrix)}
+
+To investigate multivariate relationships among the key numeric attributes, a pair plot was generated for
+\texttt{age}, \texttt{chol}, \texttt{thalach}, and \texttt{oldpeak}, with points colored according to the
+binary target variable. This visualization provides a simultaneous view of the marginal distributions of
+each feature as well as their pairwise interactions (Figure~\ref{fig:pairplot-selected}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{pairplot_selected.png}
+	\caption{Pair plot for selected numeric features, colored by the target class.}
+	\label{fig:pairplot-selected}
+\end{figure}
+
+The diagonal histograms show that \texttt{age} and \texttt{thalach} follow approximately symmetric
+distributions, whereas \texttt{chol} and \texttt{oldpeak} are noticeably right-skewed. In terms of class
+distribution, patients with heart disease (target = 1) appear slightly more often in higher age ranges,
+but the effect is modest. In contrast, clear class differences emerge in the distributions of
+\texttt{thalach} and \texttt{oldpeak}: individuals without heart disease typically achieve higher maximum
+heart rates, while those with heart disease tend to exhibit larger ST depression values.
+
+The pairwise scatter plots reveal several important patterns. The relationship between \texttt{age} and
+\texttt{thalach} displays a clear negative trend reflecting the expected physiological decline in exercise
+capacity with age. Moreover, the combination of \texttt{thalach} and \texttt{oldpeak} provides the strongest
+visual separation between the two classes: non-diseased individuals cluster around high \texttt{thalach}
+and near-zero \texttt{oldpeak}, whereas diseased individuals tend to show lower \texttt{thalach} values and
+elevated \texttt{oldpeak}. In contrast, \texttt{chol} exhibits substantial overlap between the two classes
+in all pairwise projections, indicating that it is a weaker standalone discriminating feature.
+
+Overall, the pair plots confirm that heart disease in this dataset is most strongly associated with exercise
+performance indicators (\texttt{thalach}, \texttt{oldpeak}), while features such as \texttt{chol} and
+\texttt{age} show weaker or less consistent separation. These multivariate patterns justify the use of a
+distance-based classifier such as KNN, which can exploit such relationships even when they are nonlinear or
+not clearly separable along any single dimension.
+
+\subsection{Count Plots of Categorical Features}
+
+To better understand the distribution of categorical variables in the dataset, count plots were generated for
+\texttt{cp} (chest pain type), \texttt{exang} (exercise-induced angina), \texttt{sex}, and the binary
+\texttt{target} variable. These plots illustrate the frequency of each category and help identify any potential
+imbalances in the dataset.
+
+\paragraph{Chest Pain Type (\texttt{cp}).}
+Figure~\ref{fig:count-cp} shows that chest pain type is far from uniformly distributed. The category
+\texttt{cp} = 0 (typical angina) is the most common with nearly 500 observations, while \texttt{cp} = 3
+(asymptomatic) is the least frequent with fewer than 100 samples. The other two categories fall between these
+extremes. This distribution reflects real-world clinical observations, where typical angina is often the primary
+presenting symptom among cardiac patients.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{count_cp.png}
+	\caption{Count plot of the \texttt{cp} (chest pain type) attribute.}
+	\label{fig:count-cp}
+\end{figure}
+
+\paragraph{Exercise-Induced Angina (\texttt{exang}).}
+As shown in Figure~\ref{fig:count-exang}, the majority of patients (\texttt{exang} = 0) did not experience
+exercise-induced angina during stress testing. A smaller subset of roughly one-third of the dataset consists
+of patients who did experience angina (\texttt{exang} = 1). This imbalance is expected, as not all individuals
+display angina symptoms even when underlying disease is present.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{count_exang.png}
+	\caption{Count plot of the \texttt{exang} attribute.}
+	\label{fig:count-exang}
+\end{figure}
+
+\paragraph{Sex.}
+Figure~\ref{fig:count-sex} demonstrates that the dataset contains a higher proportion of male patients
+(\texttt{sex} = 1) compared to female patients (\texttt{sex} = 0), with an approximate ratio of 2:1.
+This distribution reflects the higher prevalence of heart disease among men in many clinical populations.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{count_sex.png}
+	\caption{Count plot of the \texttt{sex} attribute.}
+	\label{fig:count-sex}
+\end{figure}
+
+\paragraph{Target Variable.}
+The class distribution shown in Figure~\ref{fig:count-target} indicates that the dataset is nearly balanced,
+with similar numbers of samples for \texttt{target} = 0 (no heart disease) and \texttt{target} = 1
+(presence of heart disease). This balance is advantageous for training classification models, as it reduces
+the risk of bias toward either class and removes the need for rebalancing techniques such as oversampling or
+class weighting.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{count_target.png}
+	\caption{Count plot of the \texttt{target} variable.}
+	\label{fig:count-target}
+\end{figure}
+
+Overall, the count plots reveal realistic clinical distributions across the categorical features. Although some
+categories—such as chest pain type and sex—exhibit notable imbalances, the balanced target distribution ensures
+that classification models such as KNN can be trained effectively without requiring adjustments for class imbalance.

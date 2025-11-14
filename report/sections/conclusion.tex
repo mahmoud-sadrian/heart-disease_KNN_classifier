@@ -1,0 +1,42 @@
+\section{Conclusion}
+
+This project presented a data mining analysis of the integrated Heart Disease dataset from the UCI
+Machine Learning Repository, with the goal of predicting the presence of heart disease using a
+K-Nearest Neighbors (KNN) classifier. The workflow included data preprocessing, an extensive exploratory
+data analysis (EDA), and the implementation of a mixed-distance KNN model capable of handling both
+numeric and categorical attributes.
+
+The preprocessing stage ensured that the dataset was suitable for distance-based learning. Missing values
+were imputed using median and mode strategies for numerical and categorical features, respectively.
+Numeric attributes were then normalized using Min--Max scaling to prevent features with large numerical
+ranges from dominating the distance computation. An 80/20 train–test split was used to evaluate the model
+on unseen data.
+
+The EDA revealed several clinically meaningful patterns. Among all numeric attributes, \texttt{thalach}
+(maximum heart rate achieved) and \texttt{oldpeak} (exercise-induced ST depression) showed the strongest
+associations with heart disease. Patients with heart disease generally exhibited lower \texttt{thalach}
+values and higher \texttt{oldpeak} values, producing the clearest visual separation between classes in the
+scatter plots and pair plots. Other variables such as \texttt{chol} and \texttt{trestbps} exhibited weaker
+or more diffuse relationships and contained several medically plausible outliers. The target distribution
+was nearly balanced, which is favorable for classification without additional rebalancing.
+
+The KNN classifier was implemented from scratch using a combined Euclidean–Hamming distance function.
+Model performance was evaluated for different values of $k$, and the best results were achieved at
+$k = 3$, where the classifier obtained the highest accuracy, precision, recall, and F1-score.
+This choice of neighborhood size aligns with the patterns observed in the EDA: because the data exhibit
+local structure driven by a few strongly discriminative features, a smaller value of $k$ was best able to
+capture these local patterns without oversmoothing. The confusion matrix further showed that the classifier
+performed well in distinguishing between the two classes, correctly identifying most positive cases while
+maintaining a relatively low number of false alarms.
+
+Overall, the study demonstrates that the KNN algorithm—despite its simplicity—can achieve strong predictive
+performance on this medical dataset when appropriate preprocessing and distance modeling are applied. The
+results highlight the importance of exercise-related features (\texttt{thalach} and \texttt{oldpeak}) as
+key indicators of heart disease, while also illustrating the limitations of features such as \texttt{chol}
+and \texttt{trestbps} when considered in isolation.
+
+Future work could explore several extensions, including applying cross-validation for more robust estimation
+of model performance, optimizing or learning the numeric-to-categorical distance weighting, and comparing
+KNN with more advanced models such as logistic regression, decision trees, SVMs, or ensemble methods.
+Such approaches may further improve classification accuracy and yield additional insights into the
+relationships among features in cardiac risk prediction.

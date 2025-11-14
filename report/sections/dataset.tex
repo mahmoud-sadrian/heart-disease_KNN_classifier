@@ -1,0 +1,40 @@
+\section{Dataset Description}
+The dataset used in this project is the Heart Disease dataset from the UCI Machine Learning Repository~\cite{uci}.
+It consists of patient records collected from four different medical centers: Cleveland, Hungarian,
+Switzerland, and VA Long Beach. Each subset includes similar clinical attributes that describe the health
+status of patients and the presence or absence of heart disease.
+
+In this work, we use the integrated version of the dataset, which contains approximately
+\textbf{1000} instances and \textbf{13} main attributes, along with a binary target variable indicating
+whether the patient is diagnosed with heart disease (\texttt{target = 1}) or not (\texttt{target = 0}).
+The attributes can be grouped into three categories:
+
+\begin{itemize}
+	\item \textbf{Numeric (continuous) features}, such as:
+	\begin{itemize}
+		\item \texttt{age}: age in years
+		\item \texttt{trestbps}: resting blood pressure (in mm Hg)
+		\item \texttt{chol}: serum cholesterol (in mg/dl)
+		\item \texttt{thalach}: maximum heart rate achieved
+		\item \texttt{oldpeak}: ST depression induced by exercise relative to rest
+	\end{itemize}
+	\item \textbf{Binary or categorical features encoded as integers}, for example:
+	\begin{itemize}
+		\item \texttt{sex}: sex (0 = female, 1 = male)
+		\item \texttt{cp}: chest pain type (0--3)
+		\item \texttt{fbs}: fasting blood sugar $>$ 120 mg/dl (0 = false, 1 = true)
+		\item \texttt{restecg}: resting electrocardiographic results
+		\item \texttt{exang}: exercise induced angina (0 = no, 1 = yes)
+		\item \texttt{slope}: the slope of the peak exercise ST segment
+		\item \texttt{ca}: number of major vessels (0--3) colored by fluoroscopy
+		\item \texttt{thal}: thalassemia (0–3, encoded)
+	\end{itemize}
+	\item \textbf{Target variable}:
+	\begin{itemize}
+		\item \texttt{target}: presence of heart disease (0 = no, 1 = yes)
+	\end{itemize}
+\end{itemize}
+
+In the implementation, the dataset is loaded as a CSV file using the \texttt{pandas} library.
+Basic inspection of the data shape, column types, and missing values is performed to verify
+that the dataset is correctly integrated and ready for preprocessing.

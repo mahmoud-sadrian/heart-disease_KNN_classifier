@@ -1,0 +1,104 @@
+\section{KNN Classification}
+
+In this section, we apply the K-Nearest Neighbors (KNN) algorithm to classify patients based on their
+clinical measurements. KNN is an instance-based, non-parametric learning method and is particularly
+appropriate for this dataset because no strong linear separability was observed in the EDA, and several
+features (especially \texttt{thalach} and \texttt{oldpeak}) exhibit nonlinear relationships with the
+presence of heart disease. Since KNN relies directly on the distance between feature vectors, proper
+preprocessing and feature scaling are crucial components of the classification pipeline.
+
+\subsection{Overview of the KNN Algorithm}
+
+Given a test instance $x$, the KNN classifier operates by:
+
+\begin{enumerate}
+	\item Computing the distance between $x$ and all training samples,
+	\item Selecting the $k$ closest training samples,
+	\item Determining the majority class among these $k$ neighbors,
+	\item Assigning that class label to $x$.
+\end{enumerate}
+
+Because KNN does not assume any particular probabilistic or functional form for the data, it is well suited
+for medical datasets where complex and nonlinear interactions exist among variables---as confirmed by the
+pair plots and correlation patterns observed in our EDA.
+
+\subsection{Mixed Distance Function for Numeric and Categorical Features}
+
+The dataset contains a mixture of numeric variables (such as \texttt{age}, \texttt{trestbps},
+\texttt{chol}, \texttt{thalach}, and \texttt{oldpeak}) and categorical or binary attributes
+(e.g., \texttt{sex}, \texttt{cp}, \texttt{exang}, \texttt{restecg}). Using a single purely
+numeric distance metric is therefore inappropriate.
+
+To address this, a mixed distance measure combining Euclidean distance for numeric features and Hamming
+distance for categorical features was implemented:
+
+\[
+d(x,y) = w_{\text{num}} \cdot d_{\text{num}}(x,y) +
+w_{\text{cat}} \cdot d_{\text{cat}}(x,y),
+\]
+
+where both weights were set to $0.5$ in this study. This weighting ensures that numeric attributes—
+particularly influential ones such as \texttt{thalach} and \texttt{oldpeak}—contribute proportionally
+to the similarity computation, without overwhelming information provided by categorical features.
+
+\subsection{Model Training and Choice of $k$}
+
+After preprocessing and Min--Max normalization, the dataset was split into an 80/20 training–testing partition.
+The KNN classifier was trained on the resulting \texttt{X\textsubscript{train}} matrix and evaluated on
+\texttt{X\textsubscript{test}}.
+
+To examine the effect of the neighborhood size, we evaluated KNN for:
+
+\[
+k \in \{3,\,5,\,7\}.
+\]
+
+Performance was assessed using accuracy, precision, recall, and F1-score—metrics that are especially
+important in clinical contexts, where both false positives and false negatives carry significant
+consequences.
+
+\subsection{Classification Results}
+
+\begin{table}[H]
+	\centering
+	\caption{Performance of the KNN classifier for different values of $k$.}
+	\label{table:knn-results}
+	\begin{tabular}{cccccc}
+		\toprule
+		$k$ & Accuracy & Precision & Recall & F1-score \\
+		\midrule
+		3 & 0.9317 & 0.9159 & 0.9515 & 0.9333 \\
+		5 & 0.8195 & 0.7946 & 0.8641 & 0.8279 \\
+		7 & 0.8341 & 0.8053 & 0.8835 & 0.8426 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+The highest accuracy was achieved at $k = 3$. This is consistent with the moderate level of class overlap
+observed in the scatter plots and pair plots: smaller values of $k$ allow the classifier to better capture
+local patterns driven by the two most informative variables (\texttt{thalach} and \texttt{oldpeak}).
+Larger values of $k$ tend to smooth out these local distinctions, causing a drop in performance.
+
+Thus, the optimal neighborhood size for this dataset was:
+
+\[
+k_{\text{best}} = 3.
+\]
+
+\subsection{Confusion Matrix}
+
+The confusion matrix for the best-performing model is shown in Figure~\ref{fig:confusion-best}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{confusion_matrix.png}
+	\caption{Confusion matrix of the KNN classifier for $k=3$.}
+	\label{fig:confusion-best}
+\end{figure}
+
+The classifier achieves a good balance between sensitivity and specificity. The relatively high recall
+indicates that the majority of heart disease cases were correctly identified. A small number of false
+positives and false negatives remain, which is expected given the overlapping distributions observed in
+the EDA—particularly for features such as \texttt{age} and \texttt{chol}, which show weak class
+separation. Nevertheless, the model overall demonstrates strong predictive performance given the mixed
+nature of the data and the limited number of highly discriminative features.
