@@ -1,8 +1,9 @@
 /.venv
 /.venv-1
-/report/includegraphics
-/report/*.log
-/report/*.aux
-/report/*.out
-/report/*.gz
+*.log
+*.aux
+*.out
+*.gz
 /report/main.synctex.gz
+includegraphics
+includegraphical_file_path.tex
